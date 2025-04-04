@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { PlusCircle, FileText, Edit, Trash2 } from 'lucide-react';
 import axios from 'axios';
 
+axios.defaults.baseURL = 'https://app-ixkketuo.fly.dev';
+
 interface Report {
   id: string;
   name: string;
