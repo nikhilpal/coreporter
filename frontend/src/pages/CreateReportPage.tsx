@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
-import axios from 'axios';
+import apiClient from '../api/client';
 
 interface Template {
   id: string;
@@ -20,7 +20,7 @@ const CreateReportPage = () => {
     const fetchTemplates = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/templates`);
+        const response = await apiClient.get('/templates');
         setTemplates(response.data);
         setError(null);
       } catch (err) {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Search, CheckCircle, HelpCircle } from 'lucide-react';
-import axios from 'axios';
+import apiClient from '../api/client';
 
 interface Question {
   id: string;
@@ -23,7 +23,7 @@ const KnowledgeBasePage = () => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/questions`);
+        const response = await apiClient.get('/questions');
         setQuestions(response.data);
         setError(null);
       } catch (err) {

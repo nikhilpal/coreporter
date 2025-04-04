@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Download, Edit, CheckCircle } from 'lucide-react';
-import axios from 'axios';
+import apiClient from '../api/client';
 
 interface Report {
   id: string;
@@ -26,7 +26,7 @@ const ReportReviewPage = () => {
     const fetchReport = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/reports/${reportId}`);
+        const response = await apiClient.get(`/reports/${reportId}`);
         setReport(response.data);
         setEditedContent(response.data.content);
         setError(null);

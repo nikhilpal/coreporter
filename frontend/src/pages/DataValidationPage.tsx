@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
-import axios from 'axios';
+import apiClient from '../api/client';
 
 interface DataPoint {
   id: string;
@@ -99,7 +99,7 @@ const DataValidationPage = () => {
     const fetchDataSources = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/data-sources`);
+        const response = await apiClient.get('/data-sources');
         setDataSources(response.data);
         setError(null);
       } catch (err) {

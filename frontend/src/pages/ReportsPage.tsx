@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusCircle, FileText, Edit, Trash2 } from 'lucide-react';
-import axios from 'axios';
-
-axios.defaults.baseURL = 'https://app-ixkketuo.fly.dev';
+import apiClient from '../api/client';
 
 interface Report {
   id: string;
@@ -22,7 +20,7 @@ const ReportsPage = () => {
     const fetchReports = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/reports`);
+        const response = await apiClient.get('/reports');
         setReports(response.data);
         setError(null);
       } catch (err) {
