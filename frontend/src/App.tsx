@@ -5,6 +5,7 @@ import KnowledgeBasePage from './pages/KnowledgeBasePage';
 import DataValidationPage from './pages/DataValidationPage';
 import GeneratingReportPage from './pages/GeneratingReportPage';
 import ReportReviewPage from './pages/ReportReviewPage';
+import DataSourcesPage from './pages/DataSourcesPage';
 import Header from './components/Header';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<ReportsPage />} />
           <Route path="/create" element={<CreateReportPage />} />
+          <Route path="/data-sources" element={<DataSourcesPage />} />
           <Route path="/knowledge-base/:templateId" element={<KnowledgeBasePage />} />
           <Route path="/validate-data/:templateId" element={<DataValidationPage />} />
           <Route path="/generating-report/:templateId" element={<GeneratingReportPage />} />

@@ -19,6 +19,8 @@ interface DataSource {
   id: string;
   name: string;
   connector_type: string;
+  auth_type: string;
+  status: string;
   last_synced: string;
   files?: Array<{
     id: string;
@@ -85,6 +87,8 @@ const mockData: {
       id: '1',
       name: 'Financial Database',
       connector_type: 'SQL',
+      auth_type: 'API_KEY',
+      status: 'connected',
       last_synced: '2025-03-25T08:30:00Z',
       files: [
         { id: '1', filename: 'q1_financials.csv' },
@@ -95,9 +99,22 @@ const mockData: {
       id: '2',
       name: 'Marketing Analytics',
       connector_type: 'API',
+      auth_type: 'OAUTH',
+      status: 'connected',
       last_synced: '2025-03-24T14:45:00Z',
       files: [
         { id: '3', filename: 'campaign_metrics.json' }
+      ]
+    },
+    {
+      id: '3',
+      name: 'Cloud Storage',
+      connector_type: 'CLOUD_STORAGE',
+      auth_type: 'SECRET_KEY',
+      status: 'error',
+      last_synced: '2025-03-20T10:15:00Z',
+      files: [
+        { id: '4', filename: 'user_data.json' }
       ]
     }
   ],
@@ -166,6 +183,30 @@ const apiClient = {
       };
       mockData.reports.push(newReport);
       return { data: newReport };
+    } else if (url === '/data-sources') {
+      const newDataSource: DataSource = {
+        id: String(mockData.data_sources.length + 1),
+        name: data.name,
+        connector_type: data.connector_type,
+        auth_type: data.auth_type,
+        status: 'connected',
+        last_synced: new Date().toISOString(),
+        files: []
+      };
+      mockData.data_sources.push(newDataSource);
+      return { data: newDataSource };
+    } else if (url.match(/\/data-sources\/\d+\/sync/)) {
+      const dataSourceId = url.split('/')[2];
+      const dataSourceIndex = mockData.data_sources.findIndex(ds => ds.id === dataSourceId);
+      if (dataSourceIndex !== -1) {
+        mockData.data_sources[dataSourceIndex] = {
+          ...mockData.data_sources[dataSourceIndex],
+          status: 'connected',
+          last_synced: new Date().toISOString()
+        };
+        return { data: mockData.data_sources[dataSourceIndex] };
+      }
+      throw new Error('Data source not found');
     }
     
     throw new Error(`Endpoint not found: ${url}`);
@@ -188,6 +229,18 @@ const apiClient = {
         return { data: mockData.reports[reportIndex] };
       }
       throw new Error('Report not found');
+    } else if (url.startsWith('/data-sources/')) {
+      const dataSourceId = url.split('/')[2];
+      const dataSourceIndex = mockData.data_sources.findIndex(ds => ds.id === dataSourceId);
+      if (dataSourceIndex !== -1) {
+        mockData.data_sources[dataSourceIndex] = {
+          ...mockData.data_sources[dataSourceIndex],
+          ...data,
+          last_synced: new Date().toISOString()
+        };
+        return { data: mockData.data_sources[dataSourceIndex] };
+      }
+      throw new Error('Data source not found');
     }
     
     throw new Error(`Endpoint not found: ${url}`);
@@ -207,6 +260,15 @@ const apiClient = {
         return { data: deletedReport };
       }
       throw new Error('Report not found');
+    } else if (url.startsWith('/data-sources/')) {
+      const dataSourceId = url.split('/')[2];
+      const dataSourceIndex = mockData.data_sources.findIndex(ds => ds.id === dataSourceId);
+      if (dataSourceIndex !== -1) {
+        const deletedDataSource = mockData.data_sources[dataSourceIndex];
+        mockData.data_sources.splice(dataSourceIndex, 1);
+        return { data: deletedDataSource };
+      }
+      throw new Error('Data source not found');
     }
     
     throw new Error(`Endpoint not found: ${url}`);
