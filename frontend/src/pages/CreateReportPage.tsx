@@ -20,7 +20,7 @@ const CreateReportPage = () => {
     const fetchTemplates = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://app-ixkketuo.fly.dev/templates');
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/templates`);
         setTemplates(response.data);
         setError(null);
       } catch (err) {

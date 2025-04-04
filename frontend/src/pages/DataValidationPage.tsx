@@ -99,7 +99,7 @@ const DataValidationPage = () => {
     const fetchDataSources = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://app-ixkketuo.fly.dev/data-sources');
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/data-sources`);
         setDataSources(response.data);
         setError(null);
       } catch (err) {

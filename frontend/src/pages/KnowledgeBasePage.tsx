@@ -23,7 +23,7 @@ const KnowledgeBasePage = () => {
     const fetchQuestions = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://app-ixkketuo.fly.dev/questions');
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/questions`);
         setQuestions(response.data);
         setError(null);
       } catch (err) {

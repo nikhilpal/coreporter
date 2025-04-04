@@ -26,7 +26,7 @@ const ReportReviewPage = () => {
     const fetchReport = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`https://app-ixkketuo.fly.dev/reports/${reportId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/reports/${reportId}`);
         setReport(response.data);
         setEditedContent(response.data.content);
         setError(null);

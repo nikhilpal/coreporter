@@ -20,7 +20,7 @@ const ReportsPage = () => {
     const fetchReports = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://app-ixkketuo.fly.dev/reports');
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/reports`);
         setReports(response.data);
         setError(null);
       } catch (err) {
