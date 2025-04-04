@@ -27,8 +27,9 @@ const ReportReviewPage = () => {
       try {
         setLoading(true);
         const response = await apiClient.get(`/reports/${reportId}`);
-        setReport(response.data);
-        setEditedContent(response.data.content);
+        const reportData = response.data as Report;
+        setReport(reportData);
+        setEditedContent(reportData.content);
         setError(null);
       } catch (err) {
         console.error('Error fetching report:', err);

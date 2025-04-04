@@ -24,7 +24,7 @@ const KnowledgeBasePage = () => {
       try {
         setLoading(true);
         const response = await apiClient.get('/questions');
-        setQuestions(response.data);
+        setQuestions(response.data as Question[]);
         setError(null);
       } catch (err) {
         console.error('Error fetching questions:', err);

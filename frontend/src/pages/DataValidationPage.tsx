@@ -100,7 +100,7 @@ const DataValidationPage = () => {
       try {
         setLoading(true);
         const response = await apiClient.get('/data-sources');
-        setDataSources(response.data);
+        setDataSources(response.data as DataSource[]);
         setError(null);
       } catch (err) {
         console.error('Error fetching data sources:', err);

@@ -21,7 +21,7 @@ const CreateReportPage = () => {
       try {
         setLoading(true);
         const response = await apiClient.get('/templates');
-        setTemplates(response.data);
+        setTemplates(response.data as Template[]);
         setError(null);
       } catch (err) {
         console.error('Error fetching templates:', err);

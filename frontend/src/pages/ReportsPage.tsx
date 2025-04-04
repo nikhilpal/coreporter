@@ -21,7 +21,7 @@ const ReportsPage = () => {
       try {
         setLoading(true);
         const response = await apiClient.get('/reports');
-        setReports(response.data);
+        setReports(response.data as Report[]);
         setError(null);
       } catch (err) {
         console.error('Error fetching reports:', err);
