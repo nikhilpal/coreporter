@@ -27,7 +27,7 @@ const ReportReviewPage = () => {
       try {
         setLoading(true);
         const response = await apiClient.get(`/reports/${reportId}`);
-        const reportData = response.data as Report;
+        const reportData = response.data as unknown as Report;
         setReport(reportData);
         setEditedContent(reportData.content);
         setError(null);
