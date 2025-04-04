@@ -1,22 +1,63 @@
-import axios from 'axios';
+interface Report {
+  id: string;
+  name: string;
+  status: string;
+  template_id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
 
-const mockData = {
+interface Template {
+  id: string;
+  name: string;
+  description: string;
+  template_format: string;
+}
+
+interface DataSource {
+  id: string;
+  name: string;
+  connector_type: string;
+  last_synced: string;
+  files?: Array<{
+    id: string;
+    filename: string;
+  }>;
+}
+
+interface Question {
+  id: string;
+  text: string;
+  context: string;
+  answer: string | null;
+  confidence_score: number | null;
+}
+
+const mockData: {
+  reports: Report[];
+  templates: Template[];
+  data_sources: DataSource[];
+  questions: Question[];
+} = {
   reports: [
     {
       id: '1',
       name: 'Q1 Financial Report',
       status: 'draft',
+      template_id: '1',
+      content: '<h1>Q1 Financial Report</h1><p>This is a sample financial report for Q1 2025.</p><h2>Revenue</h2><p>Total revenue: $1.2M</p><h2>Expenses</h2><p>Total expenses: $800K</p><h2>Profit</h2><p>Net profit: $400K</p>',
       created_at: '2025-03-01T10:00:00Z',
-      updated_at: '2025-03-15T14:30:00Z',
-      content: '<h1>Q1 Financial Report</h1><p>This is a sample financial report for Q1 2025.</p><h2>Revenue</h2><p>Total revenue: $1.2M</p><h2>Expenses</h2><p>Total expenses: $800K</p><h2>Profit</h2><p>Net profit: $400K</p>'
+      updated_at: '2025-03-15T14:30:00Z'
     },
     {
       id: '2',
       name: 'Annual Marketing Analysis',
       status: 'approved',
+      template_id: '2',
+      content: '<h1>Annual Marketing Analysis</h1><p>This report analyzes our marketing efforts for the past year.</p><h2>Campaign Performance</h2><p>Our digital campaigns saw a 15% increase in engagement.</p><h2>ROI Analysis</h2><p>Marketing ROI improved by 22% compared to previous year.</p>',
       created_at: '2025-02-10T09:15:00Z',
-      updated_at: '2025-03-20T11:45:00Z',
-      content: '<h1>Annual Marketing Analysis</h1><p>This report analyzes our marketing efforts for the past year.</p><h2>Campaign Performance</h2><p>Our digital campaigns saw a 15% increase in engagement.</p><h2>ROI Analysis</h2><p>Marketing ROI improved by 22% compared to previous year.</p>'
+      updated_at: '2025-03-20T11:45:00Z'
     }
   ],
   templates: [
@@ -86,38 +127,38 @@ const mockData = {
 };
 
 const apiClient = {
-  get: async (url) => {
+  get: async (url: string) => {
     console.log(`Mock API GET request to: ${url}`);
     
     await new Promise(resolve => setTimeout(resolve, 500));
     
     if (url === '/reports') {
-      return { data: mockData.reports };
+      return { data: mockData.reports as Report[] };
     } else if (url.startsWith('/reports/')) {
       const reportId = url.split('/')[2];
       const report = mockData.reports.find(r => r.id === reportId);
       if (report) {
-        return { data: report };
+        return { data: report as Report };
       }
       throw new Error('Report not found');
     } else if (url === '/templates') {
-      return { data: mockData.templates };
+      return { data: mockData.templates as Template[] };
     } else if (url === '/data-sources') {
-      return { data: mockData.data_sources };
+      return { data: mockData.data_sources as DataSource[] };
     } else if (url === '/questions') {
-      return { data: mockData.questions };
+      return { data: mockData.questions as Question[] };
     }
     
     throw new Error(`Endpoint not found: ${url}`);
   },
   
-  post: async (url, data) => {
+  post: async (url: string, data: any) => {
     console.log(`Mock API POST request to: ${url}`, data);
     
     await new Promise(resolve => setTimeout(resolve, 500));
     
     if (url === '/reports') {
-      const newReport = {
+      const newReport: Report = {
         id: String(mockData.reports.length + 1),
         ...data,
         created_at: new Date().toISOString(),
@@ -130,7 +171,7 @@ const apiClient = {
     throw new Error(`Endpoint not found: ${url}`);
   },
   
-  put: async (url, data) => {
+  put: async (url: string, data: any) => {
     console.log(`Mock API PUT request to: ${url}`, data);
     
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -152,7 +193,7 @@ const apiClient = {
     throw new Error(`Endpoint not found: ${url}`);
   },
   
-  delete: async (url) => {
+  delete: async (url: string) => {
     console.log(`Mock API DELETE request to: ${url}`);
     
     await new Promise(resolve => setTimeout(resolve, 500));
